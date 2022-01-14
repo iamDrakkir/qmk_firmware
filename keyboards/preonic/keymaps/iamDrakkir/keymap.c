@@ -39,7 +39,8 @@ enum preonic_keycodes {
   COLEMAK_EN,
   LOWER_EN,
   RAISE_EN,
-  BACKLIT
+  BACKLIT,
+  GLHF
 };
 
 // Left-hand home row mods
@@ -232,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |      |Aud cy|Aud on|AudOff|AGnorm|AGswap|Qwerty|ColeSE|ColeEN|      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |Voice-|Voice+|Mus on|MusOff|MidiOn|MidOff|      |      |      |      |      |
+ * |      |Voice-|Voice+|Mus on|MusOff|MidiOn|MidOff|      | GLHF |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -241,7 +242,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______,    _______,    _______, _______, _______,
   _______,   RESET,   DEBUG, _______, _______, _______, _______, TERM_ON,   TERM_OFF,    _______, _______,  KC_DEL,
   _______, _______,  MU_MOD,   AU_ON,  AU_OFF, AG_NORM, AG_SWAP,  QWERTY, COLEMAK_SE, COLEMAK_EN, _______, _______,
-  _______,  MUV_DE,  MUV_IN,   MU_ON,  MU_OFF,   MI_ON,  MI_OFF, _______,    _______,    _______, _______, _______,
+  _______,  MUV_DE,  MUV_IN,   MU_ON,  MU_OFF,   MI_ON,  MI_OFF,    GLHF,    _______,    _______, _______, _______,
   BACKLIT, _______, _______, _______, _______, _______, _______, _______,    _______,    _______, _______, _______
 )
 
@@ -334,6 +335,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             #ifdef __AVR__
             writePinHigh(E6);
             #endif
+          }
+          return false;
+          break;
+        case GLHF:
+          if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LSFT));
+            SEND_STRING(SS_TAP(X_ENTER));
+            SEND_STRING(SS_UP(X_LSFT));
+            SEND_STRING("gl hfhfhfhfhf");
+            SEND_STRING(SS_TAP(X_ENTER));
           }
           return false;
           break;
